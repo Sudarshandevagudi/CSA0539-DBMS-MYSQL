@@ -74,4 +74,18 @@ mysql> select * from student_marksheets;
 2 rows in set (0.00 sec)
 mysql> truncate table student_marksheets;
 Query OK, 0 rows affected (0.06 sec)
+mysql> alter table student_marksheets
+    -> add studentnumber int(20);
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> select * from student_marksheets;
++------------+-------------+------------+---------------+
+| registerno | studentname | studentage | studentnumber |
++------------+-------------+------------+---------------+
+|  192110285 | sudarshan   |         18 |          NULL |
+|  192110286 | nithish     |         19 |          NULL |
+|  192110284 | bhargav     |         21 |          NULL |
++------------+-------------+------------+---------------+
+3 rows in set (0.00 sec)
 
