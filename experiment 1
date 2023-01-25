@@ -72,4 +72,6 @@ mysql> select * from student_marksheets;
 |  192110284 | bhargav     |         21 |
 +------------+-------------+------------+
 2 rows in set (0.00 sec)
+mysql> truncate table student_marksheets;
+Query OK, 0 rows affected (0.06 sec)
 
