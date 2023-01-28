@@ -1,0 +1,64 @@
+create view employee_view as
+    -> select salary,id,city
+    -> from employee
+    -> where salary > 50000;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from employee_view
+    -> ;
++--------+------+-----------+
+| salary | id   | city      |
++--------+------+-----------+
+|  90000 |  100 | delhi     |
+|  60000 |  102 | tamilnadu |
+|  70000 |  103 | bengaluru |
+| 100000 |  104 | ranchi    |
+|  55000 |  105 | punjab    |
+|  65000 |  106 | bengaluru |
+|  52000 |  107 | ranchi    |
++--------+------+-----------+
+7 rows in set (0.03 sec)
+create view payment_employee_view as
+    -> select employee.id,employee.name,employee.salary,payment.employee_id,payment.payment_id,payment.amount
+    -> from employee,payment
+    -> where employee.id=payment.employee_id;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from employee_payment_view;
+ERROR 1146 (42S02): Table 'employeesdb.employee_payment_view' doesn't exist
+mysql> select *from payment_employee_view;
++------+------+--------+-------------+------------+--------+
+| id   | name | salary | employee_id | payment_id | amount |
++------+------+--------+-------------+------------+--------+
+|  101 | dvs  |  50000 |         101 |          1 |  60000 |
+|  100 | vk   |  90000 |         100 |          3 |  70000 |
+|  102 | dk   |  60000 |         102 |          2 |  90000 |
+|  103 | abd  |  70000 |         103 |          4 |  65000 |
++------+------+--------+-------------+------------+--------+
+4 rows in set (0.00 sec)
+create index index_age on employee(age);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> explain select age from employee where age=25;
++----+-------------+----------+------------+------+---------------+-----------+---------+-------+------+----------+-------------+
+| id | select_type | table    | partitions | type | possible_keys | key       | key_len | ref   | rows | filtered | Extra       |
++----+-------------+----------+------------+------+---------------+-----------+---------+-------+------+----------+-------------+
+|  1 | SIMPLE      | employee | NULL       | ref  | index_age     | index_age | 5       | const |    1 |   100.00 | Using index |
++----+-------------+----------+------------+------+---------------+-----------+---------+-------+------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> create index index_name_age on employee(name,age);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> explain select name,age from employee;
++----+-------------+----------+------------+-------+---------------+----------------+---------+------+------+----------+-------------+
+| id | select_type | table    | partitions | type  | possible_keys | key            | key_len | ref  | rows | filtered | Extra       |
++----+-------------+----------+------------+-------+---------------+----------------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | employee | NULL       | index | NULL          | index_name_age | 46      | NULL |    8 |   100.00 | Using index |
++----+-------------+----------+------------+-------+---------------+----------------+---------+------+------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> create index index_name on employee(name);
+ERROR 1061 (42000): Duplicate key name 'index_name'
