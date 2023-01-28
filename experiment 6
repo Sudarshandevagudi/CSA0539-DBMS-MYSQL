@@ -59,3 +59,12 @@ mysql> select * from school_management order by corseno;
 |     104 | 192110283 | bhargav   |   19 | chitoor  |
 +---------+-----------+-----------+------+----------+
 4 rows in set (0.00 sec)
+select sum(age),corseno from school_management group by corseno having sum(age)>18;
++----------+---------+
+| sum(age) | corseno |
++----------+---------+
+|       19 |     104 |
+|       21 |     103 |
+|       22 |     101 |
++----------+---------+
+3 rows in set (0.03 sec)
