@@ -1,0 +1,62 @@
+ select * from employee
+    -> where age in ( select age from employee
+    -> where salary > 50000);
++-------+-----------+------+--------+------+
+| name  | city      | id   | salary | age  |
++-------+-----------+------+--------+------+
+| vk    | delhi     |  100 |  90000 |   34 |
+| dk    | tamilnadu |  102 |  60000 |   35 |
+| abd   | bengaluru |  103 |  70000 |   36 |
+| msd   | ranchi    |  104 | 100000 |   40 |
+| sanju | punjab    |  105 |  55000 |   25 |
++-------+-----------+------+--------+------+
+5 rows in set (0.00 sec)
+
+mysql> select id,amount
+    -> ;
+ERROR 1054 (42S22): Unknown column 'id' in 'field list'
+mysql> select employee_id,amount from payment
+    -> where amount not in (
+    -> select id from employee where id=101);
++-------------+--------+
+| employee_id | amount |
++-------------+--------+
+|         101 |  60000 |
+|         102 |  90000 |
+|         100 |  70000 |
+|         103 |  65000 |
++-------------+--------+
+mysql> select name,id,salary
+    -> from employee emp where salary > (
+    -> select avg(salary) from employee where city=emp.city);
+Empty set (0.00 sec)
+
+mysql> insert into employee values('kl','bengaluru',106,65000,26),('ishan','
+ranchi',107,52000,27);
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------+-----------+------+--------+------+
+| name  | city      | id   | salary | age  |
++-------+-----------+------+--------+------+
+| dvs   | kdp       |  101 |  50000 |   24 |
+| vk    | delhi     |  100 |  90000 |   34 |
+| dk    | tamilnadu |  102 |  60000 |   35 |
+| abd   | bengaluru |  103 |  70000 |   36 |
+| msd   | ranchi    |  104 | 100000 |   40 |
+| sanju | punjab    |  105 |  55000 |   25 |
+| kl    | bengaluru |  106 |  65000 |   26 |
+| ishan | ranchi    |  107 |  52000 |   27 |
++-------+-----------+------+--------+------+
+8 rows in set (0.00 sec)
+select name,id,salary
+    -> from employee emp where salary > (
+    -> select avg(salary) from employee where city=emp.city);
++------+------+--------+
+| name | id   | salary |
++------+------+--------+
+| abd  |  103 |  70000 |
+| msd  |  104 | 100000 |
++------+------+--------+
+2 rows in set (0.00 sec)
